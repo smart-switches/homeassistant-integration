@@ -30,7 +30,6 @@ permissions:
   pull-requests: read
 
 env:
-
   DRY_RUN: ${{ inputs.dry-run && 'true' || 'false' }}
   DRY_RUN_FLAG: ${{ inputs.dry-run && ' --dry-run ' || ' ' }}
 
@@ -117,10 +116,8 @@ jobs:
       -
         name: Fetch GitHub App identity
         id: app-identity
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          APP_USER=$(gh api /users/${{ vars.BOT_APP_ID }}[bot] --jq '.login')
+          APP_USER="${{ steps.app-token.outputs.app-slug }}[bot]"
           APP_EMAIL="${APP_USER}@users.noreply.github.com"
 
           {
