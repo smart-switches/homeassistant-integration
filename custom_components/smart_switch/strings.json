@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add Smart Switches",
+        "description": "Set up the Smart Switches integration."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Only a single instance of Smart Switches is allowed."
+    }
+  }
+}
