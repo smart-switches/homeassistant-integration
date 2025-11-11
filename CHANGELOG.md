@@ -1,6 +1,10 @@
-# v0.0.3
- * [`3c00183`](https://github.com/smart-switches/homeassistant-integration/commit/3c00183) [bot] v0.0.3
+# v0.0.6
+ * [`38c4e3c`](https://github.com/smart-switches/homeassistant-integration/commit/38c4e3c) use app-slug output!
 
+ * [`38c4e3c`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/38c4e3c) use app-slug output!
+ * [`b82e936`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/b82e936) push as bot
+
+# v0.0.3
 
 # v0.0.3
  * [`667bdd1`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/667bdd1) slim down to minimal
