@@ -1,6 +1,7 @@
 # v0.0.8
- * [`4f03c7d`](https://github.com/smart-switches/homeassistant-integration/commit/4f03c7d) no bot msg
+ * [`43729df`](https://github.com/smart-switches/homeassistant-integration/commit/43729df) v0.0.8
 
+ * [`43729df`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/43729df) v0.0.8
  * [`4f03c7d`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/4f03c7d) no bot msg
 
 # v0.0.6
