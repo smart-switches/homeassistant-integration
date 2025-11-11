@@ -166,7 +166,7 @@ jobs:
         id: commit
         run: |
           git add .
-          git commit -m "[bot] ${PATCH}"
+          git commit -m "${PATCH}"
 
           # Output commit hash
           COMMIT_HASH=$(git show --no-patch --format="%h")
