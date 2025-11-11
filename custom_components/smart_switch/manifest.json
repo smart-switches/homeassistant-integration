@@ -4,14 +4,10 @@
   "codeowners": [
     "@lucaspopp0"
   ],
-  "config_flow": true,
-  "dependencies": [
-    "bluetooth"
-  ],
-  "documentation": "https://github.com/lucaspopp0/ha-smart-switches-integration",
-  "issue_tracker": "https://github.com/lucaspopp0/ha-smart-switches-integration/issues",
-  "homekit": {},
+  "dependencies": [],
+  "documentation": "https://github.com/smart-switches/homeassistant-integration",
+  "integration_type": "device",
   "iot_class": "local_polling",
   "requirements": [],
-  "version": "v0.0.1.0"
+  "version": "0.1.0"
 }

@@ -12,25 +12,16 @@ on:
         required: true
     outputs:
       current-version:
-        description: "Current version"
         value: ${{ jobs.bump-version.outputs.current-version }}
       next-major-tag:
-        description: Next major tag
         value: ${{ jobs.bump-version.outputs.next-major-tag }}
       next-minor-tag:
-        description: Next minor tag
         value: ${{ jobs.bump-version.outputs.next-minor-tag }}
       next-patch-tag:
-        description: Next patch tag
         value: ${{ jobs.bump-version.outputs.next-patch-tag }}
-      next-incrm-tag:
-        description: Next increment tag
-        value: ${{ jobs.bump-version.outputs.next-incrm-tag }}
       change:
-        description: Changed?
         value: ${{ jobs.bump-version.outputs.change }}
       update-sha:
-        description: SHA if commit pushed
         value: ${{ jobs.bump-version.outputs.update-sha }}
 
 permissions:
@@ -52,7 +43,6 @@ jobs:
       next-major-tag: ${{ steps.output-tags.outputs.MAJOR }}
       next-minor-tag: ${{ steps.output-tags.outputs.MINOR }}
       next-patch-tag: ${{ steps.output-tags.outputs.PATCH }}
-      next-incrm-tag: ${{ steps.output-tags.outputs.INCR }}
       change: ${{ steps.output-tags.outputs.change }}
       update-sha: ${{ steps.commit.outputs.commit-hash }}
     steps:
@@ -63,7 +53,7 @@ jobs:
           app-id: ${{ vars.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       -
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
@@ -78,13 +68,19 @@ jobs:
             echo 'EOT';
           } | tee -a "$GITHUB_OUTPUT"
       -
+        name: Read version from manifest.json
+        id: config-version
+        run: |
+          MANIFEST_VERSION=$(jq -r '.version' ./custom_components/smart_switch/manifest.json)
+          echo "version=$MANIFEST_VERSION" | tee -a "$GITHUB_OUTPUT"
+      -
         name: Determine version format
         id: version-format
         env:
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          VERSION_FORMAT='${major}.${minor}.${patch}.${increment}'
-          
+          VERSION_FORMAT='${major}.${minor}.${patch}'
+
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
             VERSION_FORMAT='${major}.${minor}.${patch}-pr'"${PR_NUMBER}"'-${increment}'
           fi
@@ -96,7 +92,7 @@ jobs:
         uses: paulhatch/semantic-version@v5.4.0
         with:
           tag_prefix: v
-          enable_prerelease_mode: true
+          bump_each_commit: true
       -
         name: Construct version tags
         id: output-tags
@@ -104,18 +100,16 @@ jobs:
           LATEST_MAJOR="${{ steps.version.outputs.major }}"
           LATEST_MINOR="${LATEST_MAJOR}.${{ steps.version.outputs.minor }}"
           LATEST_PATCH="${LATEST_MINOR}.${{ steps.version.outputs.patch }}"
-          LATEST_INCRM="${LATEST_PATCH}.${{ steps.version.outputs.increment }}"
 
-          echo "::notice::Detected version: ${LATEST_INCRM}"
+          echo "::notice::Detected version: ${LATEST_PATCH}"
 
           {
             echo "MAJOR=v$LATEST_MAJOR";
             echo "MINOR=v$LATEST_MINOR";
             echo "PATCH=v$LATEST_PATCH";
-            echo "INCRM=v$LATEST_INCRM";
           } | tee -a "$GITHUB_OUTPUT" "$GITHUB_ENV"
-          
-          if [[ "$LATEST_INCRM" == "${{ steps.config-version.outputs.version }}" ]]; then
+
+          if [[ "$LATEST_PATCH" == "${{ steps.config-version.outputs.version }}" ]]; then
             echo "change=false" | tee -a "$GITHUB_OUTPUT"
           else
             echo "change=true" | tee -a "$GITHUB_OUTPUT"
@@ -136,12 +130,16 @@ jobs:
           git checkout "${{ github.head_ref || github.ref_name }}"
       -
         name: Update manifest files
+        env:
+          VERSION_TAG: ${{ steps.output-tags.outputs.PATCH }}
         run: |
           while IFS='' read -r component || [[ -n "$component" ]]; do
             MANIFEST_FILE="custom_components/$component/manifest.json"
 
+            WITHOUT_PREFIX="${VERSION_TAG#v}"
             MANIFEST_JSON=$(jq -r \
-              '.version = "${{ steps.output-tags.outputs.INCRM }}"' \
+              --arg version "$WITHOUT_PREFIX" \
+              '.version = $version' \
               "$MANIFEST_FILE")
 
             printf '%s' "$MANIFEST_JSON" > "$MANIFEST_FILE"
@@ -149,7 +147,7 @@ jobs:
       -
         name: Update CHANGELOG.md
         env:
-          VERSION_TAG: ${{ steps.output-tags.outputs.INCRM }}
+          VERSION_TAG: ${{ steps.output-tags.outputs.PATCH }}
           COMMIT_MESSAGE: '[`${{ steps.commit-message.outputs.hash }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.commit-message.outputs.hash }}) ${{ steps.commit-message.outputs.message }}'
         run: |
           ./scripts/changelog.sh \
@@ -159,8 +157,8 @@ jobs:
         id: commit
         run: |
           git add .
-          git commit -m "[bot] ${INCRM}"
-          
+          git commit -m "[bot] ${PATCH}"
+
           # Output commit hash
           COMMIT_HASH=$(git show --no-patch --format="%h")
           echo "commit-hash=$COMMIT_HASH" | tee -a "$GITHUB_OUTPUT"
@@ -171,12 +169,13 @@ jobs:
           else
             git push --force
           fi
+
       -
         name: "Update tags (DRY_RUN=${{ env.DRY_RUN }})"
         run: |
-          git tag "$INCRM"
+          git tag "$PATCH"
 
-          tags=("$INCRM" "$MAJOR" "$MINOR" "$PATCH")
+          tags=("$MAJOR" "$MINOR" "$PATCH")
 
           for tag in "${tags[@]}"; do
             echo "::group::Pointing tag ${tag} to ${{ steps.commit.outputs.commit-hash }}"
@@ -228,7 +227,7 @@ jobs:
             gh release delete "${PATCH}" -y
           fi
 
-          gh release create ${INCRM} \
+          gh release create ${PATCH} \
             --title "${PATCH}" \
             --generate-notes \
             --notes-start-tag "${NOTES_START_TAG}"
