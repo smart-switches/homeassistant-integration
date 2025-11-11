@@ -1,6 +1,8 @@
-# v0.0.10
- * [`e22c9d6`](https://github.com/smart-switches/homeassistant-integration/commit/e22c9d6) skip second commit, hopefully
+# v0.0.11
+ * [`16bfea4`](https://github.com/smart-switches/homeassistant-integration/commit/16bfea4) initial config flow
 
+ * [`16bfea4`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/16bfea4) initial config flow
+ * [`fc2ba96`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/fc2ba96) v0.0.10
  * [`e22c9d6`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/e22c9d6) skip second commit, hopefully
  * [`058bcc9`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/058bcc9) v0.0.8
  * [`43729df`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/43729df) v0.0.8
