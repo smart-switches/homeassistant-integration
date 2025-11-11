@@ -115,13 +115,25 @@ jobs:
             echo "change=true" | tee -a "$GITHUB_OUTPUT"
           fi
       -
+        name: Fetch GitHub App identity
+        id: app-identity
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          APP_USER=$(gh api /users/${{ vars.BOT_APP_ID }}[bot] --jq '.login')
+          APP_EMAIL="${APP_USER}@users.noreply.github.com"
+
+          {
+            echo "user=$APP_USER"
+            echo "email=$APP_EMAIL"
+          } | tee -a "$GITHUB_OUTPUT"
+      -
         name: Configure git
         run: |
-          git config --global \
-            user.name 'lucaspopp0-bot[bot]'
+          git config --global user.name "${{ steps.app-identity.outputs.user }}"
+          git config --global user.email "${{ steps.app-identity.outputs.email }}"
 
-          git config --global \
-            user.email 'lucaspopp0-bot[bot]@users.noreply.github.com'
+          echo "Configured git as: ${{ steps.app-identity.outputs.user }} <${{ steps.app-identity.outputs.email }}>"
       -
         name: Checkout ref for commit
         run: |
