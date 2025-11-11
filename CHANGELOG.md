@@ -1,6 +1,8 @@
-# v0.0.8
- * [`43729df`](https://github.com/smart-switches/homeassistant-integration/commit/43729df) v0.0.8
+# v0.0.10
+ * [`e22c9d6`](https://github.com/smart-switches/homeassistant-integration/commit/e22c9d6) skip second commit, hopefully
 
+ * [`e22c9d6`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/e22c9d6) skip second commit, hopefully
+ * [`058bcc9`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/058bcc9) v0.0.8
  * [`43729df`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/43729df) v0.0.8
  * [`4f03c7d`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/4f03c7d) no bot msg
 
