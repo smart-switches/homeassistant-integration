@@ -1,6 +1,9 @@
-# v0.0.6
- * [`3d08371`](https://github.com/smart-switches/homeassistant-integration/commit/3d08371) [bot] v0.0.6
+# v0.0.8
+ * [`4f03c7d`](https://github.com/smart-switches/homeassistant-integration/commit/4f03c7d) no bot msg
 
+ * [`4f03c7d`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/4f03c7d) no bot msg
+
+# v0.0.6
 
 # v0.0.6
  * [`38c4e3c`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/38c4e3c) use app-slug output!
