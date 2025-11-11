@@ -4,6 +4,7 @@
   "codeowners": [
     "@lucaspopp0"
   ],
+  "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/smart-switches/homeassistant-integration",
   "integration_type": "device",
