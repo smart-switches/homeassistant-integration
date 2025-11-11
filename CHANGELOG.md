@@ -1,6 +1,8 @@
-# v0.0.12
- * [`e88fc3e`](https://github.com/smart-switches/homeassistant-integration/commit/e88fc3e) config flow fix
+# v0.0.13
+ * [`f3a46e8`](https://github.com/smart-switches/homeassistant-integration/commit/f3a46e8) const.py
 
+ * [`f3a46e8`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/f3a46e8) const.py
+ * [`d4426a8`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/d4426a8) v0.0.12
  * [`e88fc3e`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/e88fc3e) config flow fix
  * [`3d62ac8`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/3d62ac8) v0.0.11
  * [`16bfea4`](https://github.com/lucaspopp0/ha-smart-switches-integration/commit/16bfea4) initial config flow
